@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
-    "target": "ES6",      // Specify ECMAScript target version: 'ES5', 'ES6', etc.
-    "module": "commonjs", // Specify module code generation: 'commonjs', 'es6', etc.
-    "strict": true,       // Enable all strict type-checking options
-    "esModuleInterop": true,  // Enable interoperability between CommonJS and ES modules
-    "outDir": "./dist",   // Specify output directory for compiled files
-    "rootDir": "./src"    // Specify input source directory
+    "target": "ESNext",      // Use ESNext for modern JS features.
+    "module": "ESNext",      // Use ES modules for frontend projects.
+    "strict": true,          // Enable strict type-checking.
+    "esModuleInterop": true, // Enable compatibility between CommonJS and ES modules.
+    "outDir": "./dist",      // Output directory for compiled files.
+    "rootDir": "./src",      // Input source directory.
+    "sourceMap": true,       // Enable source maps for debugging.
+    "lib": ["DOM", "ESNext"] // Target the DOM and latest ECMAScript features.
   },
-  "include": ["src"]      // Specify the source files to include
+  "include": ["src"]          // Include the "src" directory.
 }

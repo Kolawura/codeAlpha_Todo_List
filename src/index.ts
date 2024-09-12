@@ -1,3 +1,5 @@
+import "../dist/styles.css";
+
 interface Task {
   id: number;
   text: string;
@@ -14,8 +16,6 @@ const sm_footer = document.querySelector("#sm_footer") as HTMLDivElement;
 
 let Tasks: Task[] = JSON.parse(localStorage.getItem("task") || "[]");
 let editId: number | null = null;
-
-
 
 addEventListener("keydown", function (e) {
   if (e.key === "Enter") {

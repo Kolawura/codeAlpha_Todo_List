@@ -1,4 +1,4 @@
-"use strict";
+import "../dist/styles.css";
 const textInput = document.querySelector("#Todo_text");
 const taskCont = document.querySelector("#task");
 const addBtn = document.querySelector("#addBtn");
@@ -37,7 +37,7 @@ const addTask = () => {
         console.log(Tasks);
     }
     if (editId) {
-        Tasks = Tasks.map((task) => task.id === editId ? Object.assign(Object.assign({}, task), { text: InputValue }) : task);
+        Tasks = Tasks.map((task) => task.id === editId ? { ...task, text: InputValue } : task);
         console.log(Tasks);
         localStorage.setItem("task", JSON.stringify(Tasks));
         editId = null;
@@ -92,7 +92,7 @@ const displayTasks = (Tasks) => {
 };
 // TOGGLE COMPLETE TASK
 const ToggleComplete = (id) => {
-    Tasks = Tasks.map((task) => task.id === id ? Object.assign(Object.assign({}, task), { complete: !task.complete }) : task);
+    Tasks = Tasks.map((task) => task.id === id ? { ...task, complete: !task.complete } : task);
     localStorage.setItem("task", JSON.stringify(Tasks));
     displayTasks(Tasks);
 };
@@ -121,3 +121,4 @@ document.addEventListener("DOMContentLoaded", () => {
     displayTasks(Tasks);
 });
 addBtn.addEventListener("click", addTask);
+//# sourceMappingURL=index.js.map
