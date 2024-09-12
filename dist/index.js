@@ -1,4 +1,4 @@
-import "../dist/styles.css";
+"use strict";
 const textInput = document.querySelector("#Todo_text");
 const taskCont = document.querySelector("#task");
 const addBtn = document.querySelector("#addBtn");
@@ -26,24 +26,30 @@ const showError = (message) => {
 const addTask = () => {
     addBtn.textContent = "Add Task";
     const InputValue = textInput.value.trim();
-    if (InputValue === "") {
+    if (InputValue !== "") {
+        if (editId === null) {
+            const newTask = {
+                id: Date.now(),
+                text: InputValue,
+                complete: false,
+            };
+            Tasks = [newTask, ...Tasks];
+            localStorage.setItem("task", JSON.stringify(Tasks));
+            console.log(Tasks);
+        }
+        if (editId) {
+            Tasks = Tasks.map((task) => task.id === editId ? { ...task, text: InputValue } : task);
+            console.log(Tasks);
+            localStorage.setItem("task", JSON.stringify(Tasks));
+            editId = null;
+        }
+        displayTasks(Tasks);
+        textInput.value = "";
+    }
+    else {
         showError("Sorry, Input cannot be empty");
         return;
     }
-    if (editId === null) {
-        const newTask = { id: Date.now(), text: InputValue, complete: false };
-        Tasks = [newTask, ...Tasks];
-        localStorage.setItem("task", JSON.stringify(Tasks));
-        console.log(Tasks);
-    }
-    if (editId) {
-        Tasks = Tasks.map((task) => task.id === editId ? { ...task, text: InputValue } : task);
-        console.log(Tasks);
-        localStorage.setItem("task", JSON.stringify(Tasks));
-        editId = null;
-    }
-    displayTasks(Tasks);
-    textInput.value = "";
 };
 const displayTasks = (Tasks) => {
     if (Tasks.length !== 0) {
@@ -120,5 +126,5 @@ const editTask = (id) => {
 document.addEventListener("DOMContentLoaded", () => {
     displayTasks(Tasks);
 });
-addBtn.addEventListener("click", addTask);
+addBtn.onclick = () => addTask();
 //# sourceMappingURL=index.js.map

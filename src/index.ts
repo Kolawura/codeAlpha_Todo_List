@@ -1,5 +1,3 @@
-import "../dist/styles.css";
-
 interface Task {
   id: number;
   text: string;
@@ -37,26 +35,31 @@ const showError = (message: string): void => {
 const addTask = (): void => {
   addBtn.textContent = "Add Task";
   const InputValue: string = textInput.value.trim();
-  if (InputValue === "") {
+  if (InputValue !== "") {
+    if (editId === null) {
+      const newTask: Task = {
+        id: Date.now(),
+        text: InputValue,
+        complete: false,
+      };
+      Tasks = [newTask, ...Tasks];
+      localStorage.setItem("task", JSON.stringify(Tasks));
+      console.log(Tasks);
+    }
+    if (editId) {
+      Tasks = Tasks.map((task) =>
+        task.id === editId ? { ...task, text: InputValue } : task
+      );
+      console.log(Tasks);
+      localStorage.setItem("task", JSON.stringify(Tasks));
+      editId = null;
+    }
+    displayTasks(Tasks);
+    textInput.value = "";
+  } else {
     showError("Sorry, Input cannot be empty");
     return;
   }
-  if (editId === null) {
-    const newTask: Task = { id: Date.now(), text: InputValue, complete: false };
-    Tasks = [newTask, ...Tasks];
-    localStorage.setItem("task", JSON.stringify(Tasks));
-    console.log(Tasks);
-  }
-  if (editId) {
-    Tasks = Tasks.map((task) =>
-      task.id === editId ? { ...task, text: InputValue } : task
-    );
-    console.log(Tasks);
-    localStorage.setItem("task", JSON.stringify(Tasks));
-    editId = null;
-  }
-  displayTasks(Tasks);
-  textInput.value = "";
 };
 
 const displayTasks = (Tasks: Task[]): void => {
@@ -143,4 +146,4 @@ document.addEventListener("DOMContentLoaded", () => {
   displayTasks(Tasks);
 });
 
-addBtn.addEventListener("click", addTask);
+addBtn.onclick = () => addTask();

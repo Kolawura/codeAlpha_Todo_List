@@ -2,3 +2,62 @@
 @tailwind components;
 @tailwind utilities;
 
+.taskList{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+    padding: 8px 4px;
+}
+
+.taskList li{
+    font-size: 1.25rem;
+    color: rgb(15, 15, 15);
+    font-weight: 600;
+    column-gap: 4px;
+    display: flex;
+    flex: 4;
+    padding: 6px;
+    overflow: auto hidden;
+    overflow-wrap: normal;
+}
+::-webkit-scrollbar{ 
+    width: 0;               /* Chrome/Safari/Webkit  */
+    background: transparent;
+}
+.taskList button{
+    border-radius: 6px;
+    background-color: rgb(209, 209, 209);
+    font-weight: 900px;
+    font-size: large;
+    margin: 5px;
+    flex: 1;
+    height: 2rem;
+}
+.taskList button:hover{
+    border-width: 2px;
+    font-size: 1.1rem;
+}
+.delBtn{
+    border-color: rgb(245, 99, 99);
+    color: rgb(245, 99, 99);
+}
+.edtBtn{
+    border-color: rgb(90, 90, 231);
+    color: rgb(90, 90, 231);
+}
+.compBtn{
+    border-color: rgb(84, 204, 84);
+    color: rgb(84, 204, 84);
+}
+.hr{
+border: 0.5px solid rgb(209, 209, 209);
+}
+
+@media  (max-width: 767px) {
+    .taskList li{
+        font-size: 1rem;
+        font-weight: 500;
+    }
+    
+}
