@@ -50,6 +50,10 @@
     border-color: rgb(84, 204, 84);
     color: rgb(84, 204, 84);
 }
+.complete{
+    text-decoration: line-through;
+    color: rgba(218, 217, 217, 0.5)
+  }
 .hr{
 border: 0.5px solid rgb(209, 209, 209);
 }

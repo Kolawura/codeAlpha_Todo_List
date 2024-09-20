@@ -1,3 +1,5 @@
+import "./styles.css";
+
 interface Task {
   id: number;
   text: string;
@@ -11,10 +13,46 @@ const errCont = document.querySelector("#errCont") as HTMLDivElement;
 const errMsg = document.querySelector("#errMsg") as HTMLParagraphElement;
 const lg_footer = document.querySelector("#lg_footer") as HTMLDivElement;
 const sm_footer = document.querySelector("#sm_footer") as HTMLDivElement;
+const showAll = document.querySelector("#showAll") as HTMLAnchorElement;
+const ft_showAll = document.querySelector("#ft_showAll") as HTMLAnchorElement;
+const showComp = document.querySelector("#showComp") as HTMLAnchorElement;
+const ft_showComp = document.querySelector("#ft_showComp") as HTMLAnchorElement;
+const clearComp = document.querySelector("#clearCompTask") as HTMLAnchorElement;
+const active = document.querySelector("#active") as HTMLAnchorElement;
+const ft_active = document.querySelector("#ft_active") as HTMLAnchorElement;
+const noCompTask = document.querySelector(
+  "#noCompTask"
+) as HTMLParagraphElement;
 
 let Tasks: Task[] = JSON.parse(localStorage.getItem("task") || "[]");
 let editId: number | null = null;
 
+// SET THE NUMBER OF TASKS
+const setNoofTask = () => {
+  const compTasks: Task[] = Tasks.filter((task) => task.complete !== true);
+  const numCompTasks = compTasks.length;
+  noCompTask.textContent = `${numCompTasks} tasks left`;
+};
+setNoofTask();
+
+// DISPLAY FOOTER ACCORDINGLY
+const setDisplayFooter = () => {
+  const tasksLength = Tasks.length;
+  if (tasksLength !== 0) {
+    lg_footer.classList.remove("hidden");
+    lg_footer.classList.add("flex");
+    sm_footer.classList.remove("hidden");
+    sm_footer.classList.add("block");
+  } else {
+    lg_footer.classList.add("hidden");
+    lg_footer.classList.remove("flex");
+    sm_footer.classList.add("hidden");
+    sm_footer.classList.remove("block");
+  }
+};
+setDisplayFooter();
+
+// CALL THE ADDTASK FUNCTION WHEN ENTER KEY IS PRESSED
 addEventListener("keydown", function (e) {
   if (e.key === "Enter") {
     e.preventDefault();
@@ -44,15 +82,17 @@ const addTask = (): void => {
       };
       Tasks = [newTask, ...Tasks];
       localStorage.setItem("task", JSON.stringify(Tasks));
-      console.log(Tasks);
+      setDisplayFooter();
+      setNoofTask();
     }
     if (editId) {
       Tasks = Tasks.map((task) =>
         task.id === editId ? { ...task, text: InputValue } : task
       );
-      console.log(Tasks);
       localStorage.setItem("task", JSON.stringify(Tasks));
       editId = null;
+      setDisplayFooter();
+      setNoofTask();
     }
     displayTasks(Tasks);
     textInput.value = "";
@@ -63,15 +103,8 @@ const addTask = (): void => {
 };
 
 const displayTasks = (Tasks: Task[]): void => {
-  if (Tasks.length !== 0) {
-    lg_footer.classList.remove("hidden");
-    lg_footer.classList.add("flex");
-    sm_footer.classList.remove("hidden");
-    sm_footer.classList.add("block");
-  }
   taskCont.innerHTML = "";
   Tasks.forEach((task) => {
-    console.log(task);
     const taskListCont = document.createElement("div");
     const taskList = document.createElement("ol");
     taskList.classList.add("taskList");
@@ -79,6 +112,7 @@ const displayTasks = (Tasks: Task[]): void => {
     taskText.classList.add("taskText");
     taskText.textContent = task.text;
     taskList.appendChild(taskText);
+
     if (task.complete) {
       taskText.classList.add("complete");
     }
@@ -110,6 +144,8 @@ const displayTasks = (Tasks: Task[]): void => {
     taskListCont.appendChild(hr);
     taskCont.appendChild(taskListCont);
   });
+  setDisplayFooter();
+  setNoofTask();
 };
 
 // TOGGLE COMPLETE TASK
@@ -142,8 +178,66 @@ const editTask = (id: number): void => {
   }
 };
 
+showAll.onclick = (e) => {
+  e.preventDefault();
+  showAllTask();
+};
+
+showComp.onclick = (e) => {
+  e.preventDefault();
+  showCompTask();
+};
+
+active.onclick = (e) => {
+  e.preventDefault();
+  activeTask();
+};
+
+ft_showAll.onclick = (e) => {
+  e.preventDefault();
+  showAllTask();
+};
+
+ft_showComp.onclick = (e) => {
+  e.preventDefault();
+  showCompTask();
+};
+
+ft_active.onclick = (e) => {
+  e.preventDefault();
+  activeTask();
+};
+
+clearComp.onclick = (e) => {
+  e.preventDefault();
+  clearCompTask();
+};
+
+const showAllTask = () => {
+  displayTasks(Tasks);
+};
+
+const showCompTask = () => {
+  const newTasks: Task[] = Tasks.filter((task) => task.complete !== false);
+  displayTasks(newTasks);
+};
+
+const activeTask = () => {
+  const newTasks: Task[] = Tasks.filter((task) => task.complete !== true);
+  displayTasks(newTasks);
+};
+
+const clearCompTask = () => {
+  Tasks = Tasks.filter((task) => task.complete !== true);
+  localStorage.setItem("task", JSON.stringify(Tasks));
+  displayTasks(Tasks);
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   displayTasks(Tasks);
 });
 
-addBtn.onclick = () => addTask();
+addBtn.onclick = (e) => {
+  e.preventDefault();
+  addTask();
+};
